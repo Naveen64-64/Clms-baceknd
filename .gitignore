@@ -1,0 +1,35 @@
+# Monorepo Dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Environment Variables & Secrets
+client/.env
+server/.env
+*.env.local
+
+# Production Build Outputs
+dist/
+client/dist/
+server/dist/
+
+# Logs & Coverage
+*.log
+logs/
+coverage/
+
+# OS & Editor Files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Raw Data Spreadsheets & Database Dumps
+*.xls
+*.xlsx
+server/src/data/backups/
+
+node_modules/
+.env
+.env.local
+dist/
