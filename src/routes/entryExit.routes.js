@@ -10,6 +10,7 @@ const { gateEntryExitSchema, activeVisitsQuerySchema } = require('../validators/
 const { gateLimiter } = require('../middlewares/rateLimiter.middleware');
 const { ROLES } = require('../config/constants');
 
+<<<<<<< HEAD
 // Public & Gate Kiosk Entry/Exit Check-in toggle using Roll Number or Candidate List
 router.post('/gate', optionalJWT, gateLimiter, validate(gateEntryExitSchema), logAudit('GATE_ENTRY_EXIT', 'ENTRY_EXIT'), entryExitController.toggleEntryExit);
 router.post('/verify', optionalJWT, gateLimiter, validate(gateEntryExitSchema), logAudit('GATE_ENTRY_EXIT', 'ENTRY_EXIT'), entryExitController.toggleEntryExit);
@@ -21,5 +22,17 @@ router.get('/active/:libraryId', optionalJWT, entryExitController.getActiveVisit
 // Get recent entrance activity (last 10 IN/OUT operations)
 router.get('/recent', optionalJWT, entryExitController.getRecentVisits);
 router.get('/recent/:libraryId', optionalJWT, entryExitController.getRecentVisits);
+=======
+// Public & Gate Kiosk Entry/Exit Check-in toggle using Roll Number
+router.post('/gate', optionalJWT, gateLimiter, validate(gateEntryExitSchema), logAudit('GATE_ENTRY_EXIT', 'ENTRY_EXIT'), entryExitController.toggleEntryExit);
+
+// Get active visits count and list for library (Entrance Staff, Librarians & Admin)
+router.get('/active', verifyJWT, authorizeRoles(ROLES.LIBRARY_ENTRANCE, ROLES.LIBRARIAN, ROLES.ADMIN), validate(activeVisitsQuerySchema, 'query'), checkLibraryAccess, entryExitController.getActiveVisits);
+router.get('/active/:libraryId', verifyJWT, authorizeRoles(ROLES.LIBRARY_ENTRANCE, ROLES.LIBRARIAN, ROLES.ADMIN), checkLibraryAccess, entryExitController.getActiveVisits);
+
+// Get recent entrance activity (last 10 IN/OUT operations)
+router.get('/recent', verifyJWT, authorizeRoles(ROLES.LIBRARY_ENTRANCE, ROLES.LIBRARIAN, ROLES.ADMIN), entryExitController.getRecentVisits);
+router.get('/recent/:libraryId', verifyJWT, authorizeRoles(ROLES.LIBRARY_ENTRANCE, ROLES.LIBRARIAN, ROLES.ADMIN), entryExitController.getRecentVisits);
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
 
 module.exports = router;

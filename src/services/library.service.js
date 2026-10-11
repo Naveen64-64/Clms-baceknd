@@ -44,8 +44,11 @@ const getLibrarySeatStatus = async (libraryId) => {
       closingTime: library.closingTime || '05:00 PM',
       status: library.status
     },
+<<<<<<< HEAD
     libraryName: library.name,
     libraryCode: library.code,
+=======
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
     capacity: library.capacity,
     activeVisits,
     availableSeats,

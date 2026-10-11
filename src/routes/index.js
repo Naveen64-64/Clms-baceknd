@@ -17,20 +17,29 @@ const auditRoutes = require('./audit.routes');
 const chatRoutes = require('./chat.routes');
 const settingsRoutes = require('./settings.routes');
 
+<<<<<<< HEAD
 const tcClearanceRoutes = require('./tcClearance.routes');
 
+=======
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
 router.use('/auth', authRoutes);
 router.use('/admin', adminRoutes);
 router.use('/settings', settingsRoutes);
 router.use('/libraries', libraryRoutes);
 router.use('/students', studentRoutes);
+<<<<<<< HEAD
 router.use('/tc-clearance', tcClearanceRoutes);
+=======
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
 router.use('/faculty', facultyRoutes);
 router.use('/users', userRoutes);
 router.use('/books', bookRoutes);
 router.use('/borrow', borrowRoutes);
 router.use('/entry-exit', entryExitRoutes);
+<<<<<<< HEAD
 router.use('/library-entrance', entryExitRoutes);
+=======
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
 router.use('/fines', fineRoutes);
 router.use('/notifications', notificationRoutes);
 router.use('/reports', reportRoutes);

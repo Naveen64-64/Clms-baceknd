@@ -15,7 +15,11 @@ const getMandatoryLibrarianProfile = async (callingUser) => {
   if (userRole === ROLES.LIBRARIAN) {
     const profile = await LibrarianProfile.findOne({ user: userId });
     if (!profile || !profile.assignedLibrary) {
+<<<<<<< HEAD
       throw new ApiError(400, 'Librarian is not assigned to any library');
+=======
+      throw new ApiError(403, 'Access denied: Mandatory librarian profile or assigned library missing');
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
     }
     return profile;
   }

@@ -12,10 +12,13 @@ server/.env
 dist/
 client/dist/
 server/dist/
+<<<<<<< HEAD
 .env
 .env.*
 !.env.example
 notepad .gitignore
+=======
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
 
 # Logs & Coverage
 *.log
@@ -33,6 +36,7 @@ Thumbs.db
 *.xlsx
 server/src/data/backups/
 
+<<<<<<< HEAD
 .env
 .env.*
 !.env.example
@@ -40,3 +44,9 @@ target/
 *.class
 .idea/
 .vscode/
+=======
+node_modules/
+.env
+.env.local
+dist/ 
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2

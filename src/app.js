@@ -15,6 +15,7 @@ app.use(helmet());
 // Production: restrict to explicit CORS_ORIGINS whitelist
 const corsOptions = process.env.NODE_ENV === 'production'
   ? {
+<<<<<<< HEAD
     origin: function (origin, callback) {
       const allowed = (process.env.CORS_ORIGINS || '').split(',').filter(Boolean);
       if (!origin || allowed.includes(origin)) return callback(null, true);
@@ -22,6 +23,15 @@ const corsOptions = process.env.NODE_ENV === 'production'
     },
     credentials: true
   }
+=======
+      origin: function (origin, callback) {
+        const allowed = (process.env.CORS_ORIGINS || '').split(',').filter(Boolean);
+        if (!origin || allowed.includes(origin)) return callback(null, true);
+        return callback(new Error('CORS: Origin not allowed'));
+      },
+      credentials: true
+    }
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
   : { origin: true, credentials: true };
 
 app.use(cors(corsOptions));

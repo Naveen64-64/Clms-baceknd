@@ -71,11 +71,14 @@ const studentProfileSchema = new mongoose.Schema(
     isEligibleForRefund: {
       type: Boolean,
       default: false
+<<<<<<< HEAD
     },
     assignedLibrary: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Library',
       index: true
+=======
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
     }
   },
   {

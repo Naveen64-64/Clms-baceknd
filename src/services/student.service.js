@@ -102,8 +102,12 @@ const registerStudent = async (studentData, registeredByUserId) => {
           section: 'A',
           email: email ? email.trim().toLowerCase() : '',
           phone: phone ? phone.trim() : '',
+<<<<<<< HEAD
           securityDepositBalance: 0,
           assignedLibrary: librarianProfile.assignedLibrary._id || librarianProfile.assignedLibrary
+=======
+          securityDepositBalance: 0
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
         }
       ],
       opts

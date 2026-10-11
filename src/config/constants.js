@@ -75,12 +75,15 @@ const LIBRARY_OPEN_TIME = '09:00';
 const LIBRARY_CLOSE_TIME = '17:00';
 const LIBRARY_TIMEZONE = 'Asia/Kolkata';
 
+<<<<<<< HEAD
 const GATE_COOLDOWN = {
   MIN_EXIT_INTERVAL_MS: 60 * 1000, // 60 seconds minimum visit duration before OUT is allowed
   MIN_EXIT_INTERVAL_SECONDS: 60,
   SHORT_SCAN_COOLDOWN_MS: 2500 // 2.5 seconds scanner debounce cooldown
 };
 
+=======
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
 module.exports = {
   ROLES,
   LIBRARIES,
@@ -97,8 +100,12 @@ module.exports = {
   LIBRARY_OPERATING_HOURS,
   LIBRARY_OPEN_TIME,
   LIBRARY_CLOSE_TIME,
+<<<<<<< HEAD
   LIBRARY_TIMEZONE,
   GATE_COOLDOWN,
   MIN_EXIT_INTERVAL_MS: GATE_COOLDOWN.MIN_EXIT_INTERVAL_MS
+=======
+  LIBRARY_TIMEZONE
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
 };
 

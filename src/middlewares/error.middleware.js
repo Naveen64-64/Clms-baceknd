@@ -32,7 +32,11 @@ const errorHandler = (err, req, res, next) => {
     success: false,
     ...(error.code && { code: error.code }),
     message: error.message,
+<<<<<<< HEAD
     ...(error.data && typeof error.data === 'object' ? { data: error.data, ...error.data } : error.data ? { data: error.data } : {}),
+=======
+    ...(error.data && { data: error.data }),
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
     errors: error.errors,
     ...(process.env.NODE_ENV === 'development' && { stack: error.stack })
   };

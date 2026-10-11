@@ -5,7 +5,11 @@ const FacultyProfile = require('../models/facultyProfile.model');
 const Library = require('../models/library.model');
 const VisitLog = require('../models/visitLog.model');
 const LibrarianProfile = require('../models/librarianProfile.model');
+<<<<<<< HEAD
 const { GENDERS, ROLES, GATE_COOLDOWN } = require('../config/constants');
+=======
+const { GENDERS, ROLES } = require('../config/constants');
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
 const { runInTransaction } = require('../utils/transaction');
 const ApiError = require('../utils/apiError');
 const occupancyEvents = require('./occupancyEmitter');
@@ -87,7 +91,11 @@ const findUserByLibraryIdentifier = async (identifier) => {
 
 const activeGateRequests = new Set();
 
+<<<<<<< HEAD
 const processGateEntryExit = async (identifier, libraryId, callingUser = null, requestedAction = null, candidates = null) => {
+=======
+const processGateEntryExit = async (identifier, libraryId, callingUser = null, requestedAction = null) => {
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
   const librarianProfile = await getMandatoryLibrarianProfile(callingUser);
   let effectiveLibraryId = libraryId;
 
@@ -102,6 +110,7 @@ const processGateEntryExit = async (identifier, libraryId, callingUser = null, r
     throw new ApiError(400, 'Target library ID or code is required');
   }
 
+<<<<<<< HEAD
   // 1. Resolve Borrower (Student or Faculty) from DB either via direct identifier or candidates list
   let borrower = null;
   let cleanId = identifier ? identifier.trim().toUpperCase() : null;
@@ -124,6 +133,13 @@ const processGateEntryExit = async (identifier, libraryId, callingUser = null, r
     throw new ApiError(404, 'USER NOT FOUND: No registered student or faculty member was found for this ID card.');
   }
 
+=======
+  if (!identifier) {
+    throw new ApiError(400, 'User ID (Roll Number or Faculty ID) is required');
+  }
+
+  const cleanId = identifier.trim().toUpperCase();
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
   const requestKey = `user_${cleanId}`;
 
   // Enforce Library Operating Hours (09:00 AM - 05:00 PM Asia/Kolkata)
@@ -146,12 +162,29 @@ const processGateEntryExit = async (identifier, libraryId, callingUser = null, r
     // Defensively resolve any stale active visits before processing scan
     await libraryHoursService.closeStaleActiveVisits();
 
+<<<<<<< HEAD
+=======
+    // 1. Resolve Borrower (Student or Faculty) from DB
+    const borrower = await findUserByLibraryIdentifier(cleanId);
+    if (!borrower) {
+      throw new ApiError(404, 'USER NOT FOUND: No registered student or faculty member was found for this User ID.');
+    }
+
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
     if (borrower.isActive === false) {
       throw new ApiError(400, 'User account is inactive');
     }
 
+<<<<<<< HEAD
     // 2. Validate Library existence (canonical code, name, or ObjectId)
     const library = await resolveLibrary(effectiveLibraryId);
+=======
+    // 2. Validate Library existence (by Code first, then ObjectId)
+    let library = await Library.findOne({ code: effectiveLibraryId });
+    if (!library && mongoose.Types.ObjectId.isValid(effectiveLibraryId)) {
+      library = await Library.findById(effectiveLibraryId);
+    }
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
     if (!library) {
       throw new ApiError(400, 'Invalid library');
     }
@@ -193,6 +226,7 @@ const processGateEntryExit = async (identifier, libraryId, callingUser = null, r
               { activeLibraryId: library.code, activeLibraryName: library.name }
             );
           }
+<<<<<<< HEAD
           // Enforce 60-second minimum visit duration before OUT is permitted
           const entryTime = new Date(activeVisit.checkInTime).getTime();
           const currentTime = Date.now();
@@ -215,6 +249,8 @@ const processGateEntryExit = async (identifier, libraryId, callingUser = null, r
             );
           }
 
+=======
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
           // Process OUT checkout
           activeVisit.checkoutTime = new Date();
           await activeVisit.save(opts);
@@ -404,7 +440,17 @@ const getActiveVisitsForLibrary = async (targetLibraryId, callingUser = null) =>
     throw new ApiError(400, 'Library ID is required to fetch active visits');
   }
 
+<<<<<<< HEAD
   let lib = await resolveLibrary(libId);
+=======
+  let lib = null;
+  if (mongoose.Types.ObjectId.isValid(libId)) {
+    lib = await Library.findById(libId);
+  }
+  if (!lib) {
+    lib = await Library.findOne({ code: libId });
+  }
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
 
   const queryLibId = lib ? lib._id : libId;
   const capacity = lib?.capacity || 50;
@@ -499,6 +545,7 @@ const getActiveVisitsForLibrary = async (targetLibraryId, callingUser = null) =>
 };
 
 
+<<<<<<< HEAD
 const resolveLibrary = async (targetIdentifier) => {
   if (!targetIdentifier) return null;
   const str = String(targetIdentifier).trim();
@@ -527,10 +574,21 @@ const resolveLibrary = async (targetIdentifier) => {
 
 const getRecentVisitsForLibrary = async (targetLibraryId, limit = 20) => {
   const lib = await resolveLibrary(targetLibraryId);
+=======
+const getRecentVisitsForLibrary = async (targetLibraryId, limit = 10) => {
+  let lib = null;
+  if (mongoose.Types.ObjectId.isValid(targetLibraryId)) {
+    lib = await Library.findById(targetLibraryId);
+  }
+  if (!lib) {
+    lib = await Library.findOne({ code: targetLibraryId });
+  }
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
   if (!lib) {
     throw new ApiError(404, 'Library not found');
   }
 
+<<<<<<< HEAD
   // Calculate today's start and end in Asia/Kolkata timezone
   const parts = libraryHoursService.getKolkataDateParts(new Date());
   const todayStart = new Date(`${parts.dateString}T00:00:00.000+05:30`);
@@ -547,10 +605,15 @@ const getRecentVisitsForLibrary = async (targetLibraryId, limit = 20) => {
       { createdAt: { $gte: todayStart, $lte: todayEnd } }
     ]
   })
+=======
+  // Fetch recent VisitLog records — fetch enough so we can expand IN+OUT rows up to limit*2
+  const visits = await VisitLog.find({ library: lib._id })
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
     .populate('user', 'username role')
     .populate('student', 'rollNumber name gender department')
     .populate('faculty', 'facultyId name email phone')
     .sort({ updatedAt: -1, checkInTime: -1 })
+<<<<<<< HEAD
     .limit(fetchLimit);
 
   // Fallback to recent library logs if none today
@@ -562,6 +625,9 @@ const getRecentVisitsForLibrary = async (targetLibraryId, limit = 20) => {
       .sort({ updatedAt: -1, checkInTime: -1 })
       .limit(fetchLimit);
   }
+=======
+    .limit(limit * 2);
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
 
   // Expand each visit into separate IN and OUT event rows
   const events = [];
@@ -573,14 +639,20 @@ const getRecentVisitsForLibrary = async (targetLibraryId, limit = 20) => {
     const base = {
       userId: uId,
       rollNumber: uId,
+<<<<<<< HEAD
       name: uName,
+=======
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
       userName: uName,
       studentName: uName,
       userType: uType,
       role: uType,
+<<<<<<< HEAD
       library: lib.code,
       libraryCode: lib.code,
       libraryName: lib.name,
+=======
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
       user: { id: uId, name: uName, role: uType },
       checkInTime: v.checkInTime,
       checkoutTime: v.checkoutTime
@@ -591,7 +663,10 @@ const getRecentVisitsForLibrary = async (targetLibraryId, limit = 20) => {
       ...base,
       id: `${v._id}_IN`,
       action: 'IN',
+<<<<<<< HEAD
       event: 'IN',
+=======
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
       timestamp: v.checkInTime
     });
 
@@ -601,15 +676,24 @@ const getRecentVisitsForLibrary = async (targetLibraryId, limit = 20) => {
         ...base,
         id: `${v._id}_OUT`,
         action: 'OUT',
+<<<<<<< HEAD
         event: 'OUT',
+=======
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
         timestamp: v.checkoutTime
       });
     }
   }
 
+<<<<<<< HEAD
   // Sort all events newest first and return up to requested limit
   events.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
   return events.slice(0, Math.max(limit, 20));
+=======
+  // Sort all events newest first and cap at limit*2 rows
+  events.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  return events.slice(0, limit * 2);
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
 };
 
 

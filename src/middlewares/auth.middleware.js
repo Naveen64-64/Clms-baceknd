@@ -8,7 +8,10 @@ const LibrarianProfile = require('../models/librarianProfile.model');
 
 const populateUserData = async (user) => {
   const userData = {
+<<<<<<< HEAD
     _id: user._id,
+=======
+>>>>>>> 896b1feddeb4731643c43df589ca8ef7b6d8eaa2
     id: user._id,
     username: user.username,
     email: user.username,
